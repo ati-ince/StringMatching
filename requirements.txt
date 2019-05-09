@@ -1,0 +1,36 @@
+#Data Science
+---------------------------
+numpy==1.16.2
+pandas==0.24.2
+SciPy ==1.2.1
+-----
+#ML
+-----
+#scikit-learn==0.20.3
+#***
+#Keras==2.2.4
+#Keras-Applications==1.0.7
+#KerasModelZoo==0.0.1
+#***
+#tensorflow==1.13.1
+-----
+#Visulasion
+-----
+matplotlib ==3.0.3
+---------------------------
+# Jupyter Notebook
+jupyter==1.0.0
+---------------------------
+# Google Library Tech
+#pytrends==4.4.0 # Google unofficial trends
+#geocoder==1.38.1 # google unofficial geo library
+---------------------------
+# Web Scrapping
+#selenium==3.141.0
+#beautifulsoup4==4.7.1
+---------------------------
+# Miscellaneous
+#pynput == 1.4.2 # mouse control
+--------------------------------------------
+
+
