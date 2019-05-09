@@ -1,8 +1,8 @@
 import os
 import codecs
 
-SelectedEncoding= 'cp857' # cp857 for turkish, which created first...  Can be change after which is fitted.. .
-
+SelectedEncoding= 'cp437' # cp437 for english, which created first...  Can be change after which is fitted.. .
+SelectOtherEncoding = 'cp855' # for SERbIAN for test
 #sample read a file... with true codec...
 #### NOTE: One project folder have to 2 file and other has to 1 file. And 1 file should be referance for string matching and creating...
 
@@ -40,7 +40,7 @@ for name in os.listdir(langdirectoryF):
 
 #lets get the string referance from refFile
 
-f = codecs.open(RefFile, encoding=SelectedEncoding) # cp857 for turkish, which created first...
+f = codecs.open(RefFile, encoding=SelectedEncoding)
 RefFileStringCode=[]
 RefFileStringInfo=[]
 for line in f:
@@ -52,7 +52,7 @@ f.close()
 
 # we get the ref list from RefFile... Now get the Othe rlang file for read and filled..
 
-f_other = codecs.open(LangFile, encoding=SelectedEncoding)
+f_other = codecs.open(LangFile, encoding=SelectOtherEncoding) #select for other lang format for example serbian
 LangFileStringCode=[]
 LangFileStringInfo=[]
 for line in f_other:
@@ -83,18 +83,37 @@ print("ref file string code and info: " + str(len(RefFileStringCode)))
 print("new file string code: " + str(len(FileStringCode)) + "||" + "new file string info : " + str(len(FileStringInfo)))
 
 #lets test is it correct?
-
+'''
 for xx in range(len(RefFileStringInfo)):
     if RefFileStringCode[xx]==FileStringCode[xx]:
         print("TRUE || "  + RefFileStringInfo[xx] + " || " + FileStringInfo[xx] )
     else:
         print(" *** FALSE *** || " + RefFileStringInfo[xx] + " || " + FileStringInfo[xx])
+'''
 
+#############################################################################################################################
+'''  BUG - HERE !!!!! -> we open EN file with UTF-8 but, we should open other lang file with other language format
+        like if we create serbian file we should open with 
+        
+        I corrected :) using 2 different codec I bleive...
+  '''
 
 # ok we create other lang list and lets fill the new file
+## f = codecs.open(RefFile, encoding=SelectedEncoding)
+# lets write true folder name firstly....
+creation_path=os.path.dirname(os.path.realpath(RefFile))
+lang_file_name= creation_path + '\\' + LangFile.split('\\')[-1]
 
+print("will create file ----->>>   " + lang_file_name + " <<<<-----")
 
+f_new = open(lang_file_name,"w") #opens file with name of "***.txt"
+for line in range(len(FileStringCode)):
+    f_new.write(FileStringCode[line]+";"+","+'"'+FileStringInfo[line]+'"' + '\n')
 
+f_new.close()
 
+print("finito bro :)))))))))))))))))))))))))))))))))")
 
-
+'''
+BUG INFO : codec error we get :((((((((((   but finish main part
+'''
