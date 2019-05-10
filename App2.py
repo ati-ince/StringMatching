@@ -1,8 +1,24 @@
+
 import os
 import codecs
 
-SelectedEncoding= 'UTF-8' # cp437 for english, which created first...  Can be change after which is fitted.. .
+'''
+SelectedEncoding= 'utf-8' # cp437 for english, which created first...  Can be change after which is fitted.. .
 SelectOtherEncoding = 'cp855' # cp855 for SERbIAN for test
+#sample read a file... with true codec...
+#### NOTE: One project folder have to 2 file and other has to 1 file. And 1 file should be referance for string matching and creating...
+f_other = codecs.open("Str-SERB_O2.rc", encoding=SelectedEncoding) #select for other lang format for example serbian
+#f_new = open("Str-SERB_New_O2.rc","w") #opens file with name of "***.txt"
+
+for line in f_other:
+    print(line)
+    #f_new.write(line)
+
+#f_new.close()
+'''
+
+SelectedEncoding= 'utf-8' # cp437 for english, which created first...  Can be change after which is fitted.. .
+SelectOtherEncoding = 'utf-8' # cp855 for SERbIAN for test
 fileformat='.rc' #you can change
 
 #sample read a file... with true codec...
@@ -66,6 +82,9 @@ f_other.close()
 
 print("finito file list things........................")
 
+#############################################################################################
+
+
 # lets create new file list
 FileStringCode=[]
 FileStringInfo=[]
@@ -93,29 +112,3 @@ for xx in range(len(RefFileStringInfo)):
         print(" *** FALSE *** || " + RefFileStringInfo[xx] + " || " + FileStringInfo[xx])
 
 
-#############################################################################################################################
-'''  BUG - HERE !!!!! -> we open EN file with UTF-8 but, we should open other lang file with other language format
-        like if we create serbian file we should open with 
-        
-        I corrected :) using 2 different codec I bleive...
-  '''
-
-# ok we create other lang list and lets fill the new file
-## f = codecs.open(RefFile, encoding=SelectedEncoding)
-# lets write true folder name firstly....
-creation_path=os.path.dirname(os.path.realpath(RefFile))
-lang_file_name= creation_path + '\\' + LangFile.split('\\')[-1]
-
-print("will create file ----->>>   " + lang_file_name + " <<<<-----")
-
-f_new = open(lang_file_name,"w") #opens file with name of "***.txt"
-for line in range(len(FileStringCode)):
-    f_new.write(FileStringCode[line]+";"+","+'"'+FileStringInfo[line]+'"' + '\n')
-
-f_new.close()
-
-print("finito bro :)))))))))))))))))))))))))))))))))")
-
-'''
-BUG INFO : codec error we get :((((((((((   but finish main part
-'''
