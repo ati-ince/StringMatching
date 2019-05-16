@@ -24,7 +24,7 @@ fileformat='.rc' #you can change
 #sample read a file... with true codec...
 #### NOTE: One project folder have to 2 file and other has to 1 file. And 1 file should be referance for string matching and creating...
 
-ProjFolderName=['G8', 'O2']
+ProjFolderName=['G7', 'O2']
 ProjDirs=[] #lists
 StringFileNumber=[] #
 fileindex=0
@@ -61,11 +61,19 @@ for name in os.listdir(langdirectoryF):
 f = codecs.open(RefFile, encoding=SelectedEncoding)
 RefFileStringCode=[]
 RefFileStringInfo=[]
+k=0
 for line in f:
     bufStr=str(line).split(';')
     RefFileStringCode.append(bufStr[0]) #name of string kind of , it is referance string name list and order...
-    bufStr2=bufStr[1].split('"')
-    RefFileStringInfo.append(bufStr2[1])
+    # then comin ,"somethings......" with bufStr[1]
+    # lets delete ," and latest one so
+    bufStr2=bufStr[1][2:-1] #correct method
+    if len(bufStr2)!=0:
+        RefFileStringInfo.append(bufStr2)
+    else:
+        RefFileStringInfo.append("Dummy Text for Test, elements: "+"["+str(k)+"]")
+        print("----------------  ERROR ----------------" + "-> number: " + str(k))
+    k+=1
 f.close()
 
 # we get the ref list from RefFile... Now get the Othe rlang file for read and filled..
