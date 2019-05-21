@@ -1,30 +1,17 @@
-
 import os
 import codecs
 
-'''
-SelectedEncoding= 'utf-8' # cp437 for english, which created first...  Can be change after which is fitted.. .
-SelectOtherEncoding = 'cp855' # cp855 for SERbIAN for test
-#sample read a file... with true codec...
-#### NOTE: One project folder have to 2 file and other has to 1 file. And 1 file should be referance for string matching and creating...
-f_other = codecs.open("Str-SERB_O2.rc", encoding=SelectedEncoding) #select for other lang format for example serbian
-#f_new = open("Str-SERB_New_O2.rc","w") #opens file with name of "***.txt"
-
-for line in f_other:
-    print(line)
-    #f_new.write(line)
-
-#f_new.close()
-'''
-
 SelectedEncoding= 'utf-8' # cp437 for english, which created first...  Can be change after which is fitted.. .
 SelectOtherEncoding = 'utf-8' # cp855 for SERbIAN for test
-fileformat='.rc' #you can change
-
-#sample read a file... with true codec...
-#### NOTE: One project folder have to 2 file and other has to 1 file. And 1 file should be referance for string matching and creating...
+fileformat='.rc' #you can change, what ever you want or choose just file....
+splitchar=';'
 
 ProjFolderName=['G7', 'O4']
+ProjDirs=[] #lists
+StringFileNumber=[] #
+fileindex=0
+
+ProjFolderName=['G7', 'O4']  # write new lang to inside G7 folder...
 ProjDirs=[] #lists
 StringFileNumber=[] #
 fileindex=0
@@ -40,7 +27,7 @@ for i in range(len(ProjFolderName)):
     StringFileNumber.append(fileindex)
     print("string file number=" + str(StringFileNumber[i]))
     fileindex=0
-    print("*********************")
+    print("*"*100)
 
 #then, we choose 1 file folder should be referance for string ordeer..
 # lets take ref file for order
@@ -63,35 +50,43 @@ RefFileStringCode=[]
 RefFileStringInfo=[]
 k=0
 for line in f:
-    bufStr=str(line).split(';')
+    bufStr=str(line).split(splitchar)
     RefFileStringCode.append(bufStr[0]) #name of string kind of , it is referance string name list and order...
     # then comin ,"somethings......" with bufStr[1]
     # lets delete ," and latest one so
-    bufStr2=bufStr[1][2:-1] #correct method
+    bufStr2=bufStr[1][1:] #correct method after ','
     if len(bufStr2)!=0:
         RefFileStringInfo.append(bufStr2)
     else:
         RefFileStringInfo.append("Dummy Text for Test, elements: "+"["+str(k)+"]")
-        print("----------------  ERROR ----------------" + "-> number: " + str(k))
     k+=1
 f.close()
 
 # we get the ref list from RefFile... Now get the Othe rlang file for read and filled..
-
+k=0
 f_other = codecs.open(LangFile, encoding=SelectOtherEncoding) #select for other lang format for example serbian
 LangFileStringCode=[]
 LangFileStringInfo=[]
 for line in f_other:
-    bufStr=str(line).split(';')
+    bufStr=str(line).split(splitchar)
     LangFileStringCode.append(bufStr[0]) #name of string kind of , it is referance string name list and order...
-    bufStr2 = bufStr[1].split('"')
-    LangFileStringInfo.append(bufStr2[1])
+    bf='' # sometimes after first ';' we can see anothers so.... do this method.
+    for i in range(1,len(bufStr)):
+        bf+=bufStr[i]
+    if len(bufStr) > 2:  # usethis...
+        bf=bf[:-2]+splitchar+bf[-2]+'\n' #bf[-1] is '\n' olmakta, geri ekledik.. .
+        print(bf)
+    bufStr2=bf[1:] #correct method after ','
+    if len(bufStr2) != 0:
+        LangFileStringInfo.append(bufStr2)
+    else:
+        RefFileStringInfo.append("Dummy Text for Test, elements: "+"["+str(k)+"]")
+    k+=1
 f_other.close()
 
 print("finito file list things........................")
 
 #############################################################################################
-
 
 # lets create new file list
 FileStringCode=[]
@@ -117,6 +112,7 @@ print("lan file  ", LangFile )
 '''
 New file should be Ref file directory + Lang file file name
 '''
+
 buf1=RefFile.split("\\")[:-1]
 link = ""
 for k in range(len(buf1)):
@@ -127,20 +123,15 @@ buf2=LangFile.split("\\")[-1]
 newfilename=_directory+"\\"+buf2
 #lets test is it correct?
 print("new file last", newfilename)
-f_last = codecs.open(newfilename, 'w', 'utf-8')  # open for writing.... -> 'a' append ile ekliyoruz...
+f_last = codecs.open(newfilename, 'w', 'utf-8')  # open for writing with 'w' create from nothing .... -> 'a' append ile ekliyoruz...
+
+# the last part :)
 
 for xx in range(len(RefFileStringInfo)):
     if RefFileStringCode[xx]==FileStringCode[xx]:
-        data=FileStringCode[xx] + ";," + '"'+FileStringInfo[xx] +'"'
-        print(data)
-        '''
-        Bu kısımda tüm dosyayı yazdırabiliriz.
-        '''
-
-        f_last.write(data+"\n")  # add to f2 from f1.....
+        data=FileStringCode[xx] + ";," + FileStringInfo[xx]
+        f_last.write(data)  # add to f2 from f1.....
     else:
         print(" *** FALSE *** || " + RefFileStringInfo[xx] + " || " + FileStringInfo[xx])
 
 f_last.close()
-
-
