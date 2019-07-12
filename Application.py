@@ -6,15 +6,11 @@ SelectOtherEncoding = 'utf-8' # cp855 for SERbIAN for test
 fileformat='.rc' #you can change, what ever you want or choose just file....
 splitchar=';'
 
-ProjFolderName=['G7', 'O4']
+ProjFolderName=['G7', 'GM']
 ProjDirs=[] #lists
 StringFileNumber=[] #
 fileindex=0
 
-ProjFolderName=['G7', 'O4']  # write new lang to inside G7 folder...
-ProjDirs=[] #lists
-StringFileNumber=[] #
-fileindex=0
 
 for i in range(len(ProjFolderName)):
     ProjDirs.append(os.getcwd()+'\\'+ProjFolderName[i])
